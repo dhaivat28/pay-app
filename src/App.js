@@ -5,7 +5,7 @@ import { Formik, useFormik, Field, Form, ErrorMessage,useField} from 'formik';
 const MaterialInput = ({ label, ...props }) => {
   const [field] = useField(props);
   return(
-  <div style={{padding:'15px'}} >
+  <div className="form-group">
     <label htmlFor={props.name}>{label} &nbsp;&nbsp;</label>
     <Field {...field} {...props} as={TextField}/>
     <ErrorMessage name={props.name}/>
@@ -25,8 +25,19 @@ const AskDay = (props) => {
   
   if (props.subscriptionType && props.subscriptionType === "weekly")
   {   
-    return(
-        <h1>Weekly</h1>
+    return( 
+      <div className="form-group">
+        <label htmlFor="day"> Please select a day &nbsp;&nbsp;</label>
+        <Field as="select" name="day">
+        <option value="monday">Monday</option>
+        <option value="tuesday">Tuesday</option>
+        <option value="wednesday">Wednesday</option>
+        <option value="thursday">Thursday</option>
+        <option value="friday">Friday</option>
+        <option value="saturday">Saturday</option>
+        <option value="sunday">Sunday</option>
+      </Field>
+      </div>
       );
   } 
   else if (props.subscriptionType && props.subscriptionType === "monthly")
@@ -39,13 +50,10 @@ const AskDay = (props) => {
 
 const App = () => {
 
-  const [selectedDate, handleDateChange] = useState(new Date());
-
-
   return (
     <div className="App container">
       <div className="row">
-      <div className="col-lg-6">
+      <div className="col-lg-6 mt-2">
       <Formik 
             initialValues={{amount:'', subscriptionType:''}} 
             onSubmit={data => console.log(data)}        
@@ -54,14 +62,18 @@ const App = () => {
             {({values, handleSubmit}) => (
             <>
               <Form>
-                
+
+              
                 <MaterialInput label="Please Enter Amount" name="amount" type="text" />
-               
+              
+              <div className="form-group">
                 <MaterialRadio label="Daily" name="subscriptionType" value="daily" type="radio"/>
                 <MaterialRadio label="Weekly" name="subscriptionType" value="weekly" type="radio"/>
                 <MaterialRadio label="Monthly" name="subscriptionType" value="monthly" type="radio"/>
+              </div>
 
               {values.subscriptionType == "weekly" || values.subscriptionType == "monthly" ? <AskDay subscriptionType={values.subscriptionType} />: ""}
+
               <br></br>
               <Button type="submit">Submit</Button>
              </Form>

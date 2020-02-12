@@ -6,7 +6,7 @@ const cors = require('cors');
 
 
 const app = express();
-const port = 3046;
+const port = 3049;
 
 let subs = [];
 
@@ -26,7 +26,7 @@ app.get('/', (req, res) => {
       var currentDate = moment(startDate);
       var stopDate = moment(stopDate);
       while (currentDate <= stopDate) {
-          dateArray.push( moment(currentDate).format('YYYY-MM-DD') )
+          dateArray.push( moment(currentDate).format('YYYY-MM-DD'));
           currentDate = moment(currentDate).add(7, 'days');
       }
       return dateArray;
@@ -53,7 +53,13 @@ app.post('/sub',(req,res) => {
             if(weekDay < selectedDay)
             {
                   let daysDifference = selectedDay - weekDay;
-                  let actualStartDate = moment(startDate).add(daysDifference, 'days').format('YYYY/MM/DD');
+                  let actualStartDate = moment(startDate).add(daysDifference, 'days');
+                  
+                  
+                  
+                  
+                  
+                  
                   let finalDates = getDates(actualStartDate, endDate);
                   console.log(finalDates);
             }

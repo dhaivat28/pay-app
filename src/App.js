@@ -33,13 +33,13 @@ const AskDay = (props) => {
       <div className="form-group">
         <label htmlFor="day"> Please select a day &nbsp;&nbsp;</label>
         <Field as="select" name="day">
-        <option value="monday">Monday</option>
-        <option value="tuesday">Tuesday</option>
-        <option value="wednesday">Wednesday</option>
-        <option value="thursday">Thursday</option>
-        <option value="friday">Friday</option>
-        <option value="saturday">Saturday</option>
-        <option value="sunday">Sunday</option>
+        <option value="1">Monday</option>
+        <option value="2">Tuesday</option>
+        <option value="3">Wednesday</option>
+        <option value="4">Thursday</option>
+        <option value="5">Friday</option>
+        <option value="6">Saturday</option>
+        <option value="7">Sunday</option>
       </Field>
       <ErrorMessage name="day"/>
       </div>
@@ -69,17 +69,21 @@ const validationSchema = Yup.object({
   date: Yup.string().notRequired().when('subscriptionType', {
       is: (val) => val === "monthly",
       then: Yup.string().required(' Required'),
-    })
+    }),
+
+    startDate: Yup.string().required(' Required'),
+    endDate: Yup.string().required(' Required'),
   
 });
 
 const App = () => {
 
   const  handleSubmit = (data, {setSubmitting}) => {
-              setSubmitting(true); 
-              console.log(data);  
+                  setSubmitting(true); 
+              console.log("data is",data); 
+         
               //
-              axios.post(`http://localhost:3025/sub`,data)
+              axios.post(`http://localhost:3046/sub`,data)
               .then(res => {
                 console.log(res);
               })
@@ -90,13 +94,16 @@ const App = () => {
   return (
     <div className="App container">
       <div className="row align-items-center">
-      <div className="col-lg-8 mt-5">
+      <div className="col-lg-10 mt-5">
           <Formik 
             initialValues={{
             amount:'', 
             subscriptionType:'',
             day:'',
-            date:''}} 
+            date:'',
+            startDate:'',
+            endDate:''
+          }} 
             // onSubmit={(data, {setSubmitting}) => {
             //   setSubmitting(true); 
             //   console.log(data);      
@@ -104,22 +111,27 @@ const App = () => {
             // }} 
             onSubmit={handleSubmit}
             validationSchema={validationSchema}       
-          >
+            >
 
             {({values, isSubmitting}) => (
             <>
               <Form>
 
               <MaterialInput label="Please Enter Amount" name="amount" type="number" />
+              
               <div className="form-group">
               <label htmlFor="subscriptionType"> Type of Subscription &nbsp;&nbsp;</label>
                 <MaterialRadio label="Daily" name="subscriptionType" value="daily" type="radio"/>
                 <MaterialRadio label="Weekly" name="subscriptionType" value="weekly" type="radio"/>
                 <MaterialRadio label="Monthly" name="subscriptionType" value="monthly" type="radio"/>
                 <ErrorMessage name="subscriptionType"/>
-
               </div>
+
               {values.subscriptionType === "weekly" || values.subscriptionType === "monthly" ? <AskDay subscriptionType={values.subscriptionType} />: ""}
+              
+              <MaterialInput label="Subscription Start Date" name="startDate" type="date" />
+              <MaterialInput label="Subscription End Date" name="endDate" type="date" />
+
               <Button disabled={isSubmitting} variant="contained" color="primary" type="submit">Submit</Button>
 
              </Form>

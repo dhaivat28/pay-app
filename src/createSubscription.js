@@ -6,7 +6,7 @@ const cors = require('cors');
 
 
 const app = express();
-const port = 3049;
+const port = 3050;
 
 let subs = [];
 
@@ -26,7 +26,7 @@ app.get('/', (req, res) => {
       var currentDate = moment(startDate);
       var stopDate = moment(stopDate);
       while (currentDate <= stopDate) {
-          dateArray.push( moment(currentDate).format('YYYY-MM-DD'));
+          dateArray.push( moment(currentDate).format('DD/MM/YYYY'));
           currentDate = moment(currentDate).add(7, 'days');
       }
       return dateArray;

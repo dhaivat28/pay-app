@@ -2,6 +2,7 @@ import React, { useState} from 'react';
 import {TextField, Button, Radio, FormControlLabel} from "@material-ui/core";
 import { Formik, useFormik, Field, Form, ErrorMessage,useField} from 'formik';
 import * as Yup from 'yup';
+import axios from 'axios';
 
 const MaterialInput = ({ label, ...props }) => {
   const [field] = useField(props);
@@ -76,7 +77,13 @@ const App = () => {
 
   const  handleSubmit = (data, {setSubmitting}) => {
               setSubmitting(true); 
-              console.log(data);      
+              console.log(data);  
+              //
+              axios.post(`http://localhost:3025/sub`,data)
+              .then(res => {
+                console.log(res);
+              })
+              //
               setSubmitting(false);
   }
 

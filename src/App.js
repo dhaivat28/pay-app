@@ -40,6 +40,7 @@ const AskDay = (props) => {
         <option value="saturday">Saturday</option>
         <option value="sunday">Sunday</option>
       </Field>
+      <ErrorMessage name="day"/>
       </div>
       );
   } 
@@ -54,8 +55,21 @@ const AskDay = (props) => {
 };
 
 const validationSchema = Yup.object({
-  amount:  Yup.number().typeError('must be a number').positive('Must be greater than zero').required('required'),
-  subscriptionType: Yup.string().required('Please pick one option')
+
+  amount:  Yup.number().typeError('must be a number').positive('Must be greater than zero').required('Required'),
+
+  subscriptionType: Yup.string().required('Please pick a Subscription Type'),
+  
+  day: Yup.string().notRequired().when('subscriptionType', {
+    is: (val) => val == "weekly",
+    then: Yup.string().required('Required'),
+    }),
+
+  date: Yup.string().notRequired().when('subscriptionType', {
+      is: (val) => val == "monthly",
+      then: Yup.string().required('Required'),
+    })
+  
 });
 
 const App = () => {

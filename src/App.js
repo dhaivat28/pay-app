@@ -43,7 +43,9 @@ const AskDay = (props) => {
   else if (props.subscriptionType && props.subscriptionType === "monthly")
   {
     return(
-      <h1>Monthly</h1>   
+          <div className="form-group">
+          <MaterialInput label="Please pick a date of the month" name="date" type="number" />
+          </div>
     );
   }
 };
@@ -52,31 +54,33 @@ const App = () => {
 
   return (
     <div className="App container">
-      <div className="row">
-      <div className="col-lg-6 mt-2">
+      <div className="row align-items-center">
+      <div className="col-lg-6 mt-5">
       <Formik 
-            initialValues={{amount:'', subscriptionType:''}} 
+            initialValues={{
+            amount:'', 
+            subscriptionType:'',
+            day:'',
+            date:''}} 
             onSubmit={data => console.log(data)}        
           >
 
-            {({values, handleSubmit}) => (
+            {({values}) => (
             <>
               <Form>
 
-              
-                <MaterialInput label="Please Enter Amount" name="amount" type="text" />
-              
+              <MaterialInput label="Please Enter Amount" name="amount" type="number" />
               <div className="form-group">
+              <label htmlFor="subscriptionType"> Type of Subscription &nbsp;&nbsp;</label>
                 <MaterialRadio label="Daily" name="subscriptionType" value="daily" type="radio"/>
                 <MaterialRadio label="Weekly" name="subscriptionType" value="weekly" type="radio"/>
                 <MaterialRadio label="Monthly" name="subscriptionType" value="monthly" type="radio"/>
               </div>
-
               {values.subscriptionType == "weekly" || values.subscriptionType == "monthly" ? <AskDay subscriptionType={values.subscriptionType} />: ""}
+              <Button variant="contained" color="primary" type="submit">Submit</Button>
 
-              <br></br>
-              <Button type="submit">Submit</Button>
              </Form>
+              <br></br>
               <pre>{JSON.stringify(values,null,2)}</pre>
             </>
             )}

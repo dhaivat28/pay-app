@@ -6,7 +6,7 @@ const cors = require('cors');
 
 
 const app = express();
-const port = 3052;
+const port = 3060;
 
 let subs = [];
 
@@ -42,26 +42,22 @@ app.post('/sub',(req,res) => {
 
       } else if (subscriptionType === "weekly")
       {
-            console.log("Weekly");
-
             let selectedDay = parseInt(day);
             const weekDay = moment(startDate).isoWeekday();
-            
-            // console.log("weekDay",weekDay);
-            // console.log("selectedDay",selectedDay);
-            
+            let actualStartDate, finalDates;
+
             if(weekDay < selectedDay)
             {
                   let daysDifference = selectedDay - weekDay;
-                  let actualStartDate = moment(startDate).add(daysDifference, 'days');
-                  let finalDates = getDates(actualStartDate, endDate);
+                  actualStartDate = moment(startDate).add(daysDifference, 'days');
+                  finalDates = getDates(actualStartDate, endDate);
                   console.log(finalDates);
             } else {
-                  console.log("ss is",selectedDay);
-                  let x = moment(startDate).add(7, 'days').toDate();
-                  let y = moment(x).isoWeekday(selectedDay + 1).toDate();
-                  console.log("x is",x);
-                  console.log("y is",y);
+                  
+                  actualStartDate = moment(startDate).add(7, 'days').isoWeekday(selectedDay).toDate();
+                  finalDates = getDates(actualStartDate, endDate);    
+                  
+                  console.log(finalDates);
             }
       }
       else {

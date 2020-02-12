@@ -83,7 +83,7 @@ const App = () => {
               console.log("data is",data); 
          
               //
-              axios.post(`http://localhost:3052/sub`,data)
+              axios.post(`http://localhost:3060/sub`,data)
               .then(res => {
                 console.log(res);
               })

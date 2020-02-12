@@ -61,12 +61,12 @@ const validationSchema = Yup.object({
   subscriptionType: Yup.string().required('Please pick a Subscription Type'),
   
   day: Yup.string().notRequired().when('subscriptionType', {
-    is: (val) => val == "weekly",
+    is: (val) => val === "weekly",
     then: Yup.string().required(' Required'),
     }),
 
   date: Yup.string().notRequired().when('subscriptionType', {
-      is: (val) => val == "monthly",
+      is: (val) => val === "monthly",
       then: Yup.string().required(' Required'),
     })
   

@@ -1,6 +1,7 @@
 import React, { useState} from 'react';
 import {TextField, Button, Radio, FormControlLabel} from "@material-ui/core";
 import { Formik, useFormik, Field, Form, ErrorMessage,useField} from 'formik';
+import * as Yup from 'yup';
 
 const MaterialInput = ({ label, ...props }) => {
   const [field] = useField(props);
@@ -15,9 +16,11 @@ const MaterialInput = ({ label, ...props }) => {
 
 const MaterialRadio = ({label, ...props}) => {
   const [field] = useField(props);
-
   return(
+    <React.Fragment>
     <FormControlLabel {...field} {...props} control={<Radio/>} label={label}/>
+    
+    </React.Fragment>
   );
 };
 
@@ -50,22 +53,32 @@ const AskDay = (props) => {
   }
 };
 
+const validationSchema = Yup.object({
+  amount:  Yup.number().typeError('must be a number').positive('Must be greater than zero').required('required'),
+  subscriptionType: Yup.string().required('Please pick one option')
+});
+
 const App = () => {
 
   return (
     <div className="App container">
       <div className="row align-items-center">
-      <div className="col-lg-6 mt-5">
-      <Formik 
+      <div className="col-lg-8 mt-5">
+          <Formik 
             initialValues={{
             amount:'', 
             subscriptionType:'',
             day:'',
             date:''}} 
-            onSubmit={data => console.log(data)}        
+            onSubmit={(data, {setSubmitting}) => {
+              setSubmitting(true); 
+              console.log(data);      
+              setSubmitting(false);
+            }} 
+            validationSchema={validationSchema}       
           >
 
-            {({values}) => (
+            {({values, isSubmitting}) => (
             <>
               <Form>
 
@@ -75,9 +88,11 @@ const App = () => {
                 <MaterialRadio label="Daily" name="subscriptionType" value="daily" type="radio"/>
                 <MaterialRadio label="Weekly" name="subscriptionType" value="weekly" type="radio"/>
                 <MaterialRadio label="Monthly" name="subscriptionType" value="monthly" type="radio"/>
+                <ErrorMessage name="subscriptionType"/>
+
               </div>
-              {values.subscriptionType == "weekly" || values.subscriptionType == "monthly" ? <AskDay subscriptionType={values.subscriptionType} />: ""}
-              <Button variant="contained" color="primary" type="submit">Submit</Button>
+              {values.subscriptionType === "weekly" || values.subscriptionType === "monthly" ? <AskDay subscriptionType={values.subscriptionType} />: ""}
+              <Button disabled={isSubmitting} variant="contained" color="primary" type="submit">Submit</Button>
 
              </Form>
               <br></br>

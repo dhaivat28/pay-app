@@ -74,6 +74,12 @@ const validationSchema = Yup.object({
 
 const App = () => {
 
+  const  handleSubmit = (data, {setSubmitting}) => {
+              setSubmitting(true); 
+              console.log(data);      
+              setSubmitting(false);
+  }
+
   return (
     <div className="App container">
       <div className="row align-items-center">
@@ -84,11 +90,12 @@ const App = () => {
             subscriptionType:'',
             day:'',
             date:''}} 
-            onSubmit={(data, {setSubmitting}) => {
-              setSubmitting(true); 
-              console.log(data);      
-              setSubmitting(false);
-            }} 
+            // onSubmit={(data, {setSubmitting}) => {
+            //   setSubmitting(true); 
+            //   console.log(data);      
+            //   setSubmitting(false);
+            // }} 
+            onSubmit={handleSubmit}
             validationSchema={validationSchema}       
           >
 

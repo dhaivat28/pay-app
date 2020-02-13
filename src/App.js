@@ -3,10 +3,10 @@ import {Button} from "@material-ui/core";
 import { Formik,Form, ErrorMessage} from 'formik';
 import axios from 'axios';
 import SubscriptionDetails from './Components/SubscriptionDetails';
-import {MaterialInput, MaterialRadio, CustomError} from './Components/baseFields';
+import {MaterialInput, MaterialRadio, CustomError} from './Components/BaseFields';
 import Results from './Components/Results';
 
-import {SubscriptionForm} from './validations/SubscriptionForm';
+import {SubscriptionForm} from './Validations/SubscriptionForm';
 import styled from 'styled-components';
 
 const FormBox = styled.div`

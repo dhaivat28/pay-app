@@ -6,7 +6,7 @@ const cors = require('cors');
 
 
 const app = express();
-const port = 3060;
+const port = 3061;
 
 let subs = [];
 
@@ -32,10 +32,12 @@ app.get('/', (req, res) => {
       return dateArray;
   }
 
+
 app.post('/sub',(req,res) => {
-      const request = req.body;
       
+      const request = req.body;
       let {amount, subscriptionType, day, date, startDate, endDate} = request;
+
       if(subscriptionType === "daily")
       {
             console.log("daily");
@@ -53,15 +55,25 @@ app.post('/sub',(req,res) => {
                   finalDates = getDates(actualStartDate, endDate);
                   console.log(finalDates);
             } else {
-                  
                   actualStartDate = moment(startDate).add(7, 'days').isoWeekday(selectedDay).toDate();
                   finalDates = getDates(actualStartDate, endDate);    
-                  
                   console.log(finalDates);
             }
       }
       else {
             console.log("monthly");
+            console.log("date",date);
+
+            let x = moment(startDate).get('date');
+            console.log("x is ",x);
+
+            if(x < date)
+            {
+                  console.log("hurrah");
+            } else {
+                  console.log("nope");
+            }
+
       }
       
       //res.send('Done');

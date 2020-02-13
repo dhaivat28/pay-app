@@ -28,7 +28,11 @@ app.post('/sub',(req,res) => {
       
       const request = req.body;
       let {amount, subscriptionType, day, date, startDate, endDate} = request;
-
+     
+      let result = {}, invoiceDates;
+      result['amount'] = amount;
+      result['subscriptionType'] = subscriptionType;
+      
       if(subscriptionType === "daily")
       {
             console.log("daily");
@@ -37,18 +41,19 @@ app.post('/sub',(req,res) => {
       {
             let selectedDay = parseInt(day);
             const weekDay = moment(startDate).isoWeekday();
-            let actualStartDate, finalDates;
+            let actualStartDate;
 
             if(weekDay < selectedDay)
             {
                   let daysDifference = selectedDay - weekDay;
                   actualStartDate = moment(startDate).add(daysDifference, 'days');
-                  finalDates = getInvoiceDates(actualStartDate, endDate);
-                  console.log(finalDates);
+                  invoiceDates = getInvoiceDates(actualStartDate, endDate);
+                  result['invoiceDates']= invoiceDates;
+  
             } else {
                   actualStartDate = moment(startDate).add(7, 'days').isoWeekday(selectedDay).toDate();
-                  finalDates = getInvoiceDates(actualStartDate, endDate);    
-                  console.log(finalDates);
+                  invoiceDates = getInvoiceDates(actualStartDate, endDate);    
+                  result['invoiceDates']= invoiceDates;
             }
       }
       else {
@@ -67,7 +72,7 @@ app.post('/sub',(req,res) => {
 
       }
       
-      //res.send('Done');
+      res.send(result);
 });
 
 

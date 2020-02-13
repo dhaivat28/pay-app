@@ -1,27 +1,15 @@
-
-
 const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
-
-
 const app = express();
 const port = 3061;
-
-let subs = [];
 
 app.use(cors());
 app.use(bodyParser.urlencoded({extended:false}));
 app.use(bodyParser.json());
-
-
 let moment = require('moment');
 
-app.get('/', (req, res) => {
-      res.send('Hello World, from express');
-  });
-
-  function getDates(startDate, stopDate) {
+const getInvoiceDates = (startDate, stopDate) => {
       var dateArray = [];
       var currentDate = moment(startDate);
       var stopDate = moment(stopDate);
@@ -30,8 +18,11 @@ app.get('/', (req, res) => {
           currentDate = moment(currentDate).add(7, 'days');
       }
       return dateArray;
-  }
+} 
 
+app.get('/', (req, res) => {
+      res.send('Hello World, from express');
+});
 
 app.post('/sub',(req,res) => {
       
@@ -52,11 +43,11 @@ app.post('/sub',(req,res) => {
             {
                   let daysDifference = selectedDay - weekDay;
                   actualStartDate = moment(startDate).add(daysDifference, 'days');
-                  finalDates = getDates(actualStartDate, endDate);
+                  finalDates = getInvoiceDates(actualStartDate, endDate);
                   console.log(finalDates);
             } else {
                   actualStartDate = moment(startDate).add(7, 'days').isoWeekday(selectedDay).toDate();
-                  finalDates = getDates(actualStartDate, endDate);    
+                  finalDates = getInvoiceDates(actualStartDate, endDate);    
                   console.log(finalDates);
             }
       }

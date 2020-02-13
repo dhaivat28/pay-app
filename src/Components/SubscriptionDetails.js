@@ -9,6 +9,7 @@ const SubscriptionDetails = (props) => {
           <div className="form-group">
             <label htmlFor="day"> Please select a day &nbsp;&nbsp;</label>
             <Field as="select" name="day">
+            <option value="" selected disabled hidden>Choose here</option>
             <option value="1">Monday</option>
             <option value="2">Tuesday</option>
             <option value="3">Wednesday</option>

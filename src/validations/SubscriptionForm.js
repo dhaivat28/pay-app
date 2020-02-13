@@ -24,7 +24,9 @@ export const SubscriptionForm = Yup.object({
         let endDate = moment(value);
         let asDays = moment.duration(endDate.diff(startDate)).asDays();
         return (asDays > 90) ? false : true;
+        }).test('End Date greater than Start Date', 'End Date should be after the Start Date', function(value) {
+      let startDate = moment(this.parent['startDate']);
+      return ( moment(value) < startDate) ? false : true;
     }),
  
 });
-    

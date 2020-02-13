@@ -5,7 +5,7 @@ import React from 'react';
 export const MaterialInput = ({ label, ...props }) => {
       const [field] = useField(props);
       return(
-      <div className="form-group">
+      <div className="form-group mb-4">
         <label htmlFor={props.name}>{label} &nbsp;&nbsp;</label>
         <Field {...field} {...props} as={TextField}/>
         <ErrorMessage name={props.name}/>

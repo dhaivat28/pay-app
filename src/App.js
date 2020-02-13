@@ -20,7 +20,7 @@ const App = () => {
   const  handleSubmit = (data, {setSubmitting}) => {
     setSubmitting(true); 
     console.log("data is",data); 
-    axios.post(`http://localhost:3066/sub`,data)
+    axios.post(`http://localhost:3067/sub`,data)
     .then(res => {
       console.log(res.data);
     })

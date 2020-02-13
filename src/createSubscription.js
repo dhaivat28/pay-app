@@ -2,31 +2,18 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const app = express();
-const port = 3066;
+const port = 3067;
 
 app.use(cors());
 app.use(bodyParser.urlencoded({extended:false}));
 app.use(bodyParser.json());
 let moment = require('moment');
 
-const getInvoiceDates = (startDate, stopDate) => {
-      var dateArray = [];
-      var currentDate = moment(startDate);
-      var stopDate = moment(stopDate);
-      while (currentDate <= stopDate) {
-          dateArray.push( moment(currentDate).format('DD/MM/YYYY'));
-          currentDate = moment(currentDate).add(7, 'days');
-      }
-      return dateArray;
-} 
-
-const getInvoiceMonthDates = (startDate, stopDate) => {
-      var dateArray = [];
-      var currentDate = moment(startDate);
-      var stopDate = moment(stopDate);
-      while (currentDate <= stopDate) {
-          dateArray.push(moment(currentDate).format('DD/MM/YYYY'));
-          currentDate = moment(currentDate).add(1, 'month');
+const getInvoiceDates = (startDate, endDate, incrementDays, incrementTerm) => {
+      let dateArray = [];
+      while (moment(startDate) <= moment(endDate)) {
+          dateArray.push( moment(startDate).format('DD/MM/YYYY'));
+          startDate = moment(startDate).add(incrementDays, incrementTerm);
       }
       return dateArray;
 } 
@@ -38,11 +25,10 @@ app.get('/', (req, res) => {
 app.post('/sub',(req,res) => {
       
       const request = req.body;
-      let {amount, subscriptionType, day, date, startDate, endDate} = request;
+      let { subscriptionType, day, date, startDate, endDate} = request;
      
-      let result = {}, invoiceDates;
-      result['amount'] = amount;
-      result['subscriptionType'] = subscriptionType;
+      let result = request, invoiceDates;
+      
       let daysDifference =0;
       let actualStartDate;
 
@@ -55,17 +41,16 @@ app.post('/sub',(req,res) => {
             let selectedDay = parseInt(day);
             const weekDay = moment(startDate).isoWeekday();
            
-
             if(weekDay < selectedDay)
             {
                   daysDifference = selectedDay - weekDay;
                   actualStartDate = moment(startDate).add(daysDifference, 'days');
-                  invoiceDates = getInvoiceDates(actualStartDate, endDate);
+                  invoiceDates = getInvoiceDates(actualStartDate, endDate, 7, 'days');
                   result['invoiceDates']= invoiceDates;
   
             } else {
                   actualStartDate = moment(startDate).add(7, 'days').isoWeekday(selectedDay).toDate();
-                  invoiceDates = getInvoiceDates(actualStartDate, endDate);    
+                  invoiceDates = getInvoiceDates(actualStartDate, endDate, 7,'days');    
                   result['invoiceDates']= invoiceDates;
             }
       }
@@ -75,21 +60,21 @@ app.post('/sub',(req,res) => {
             let selectedDate = parseInt(date);
 
             if(extractedDate < selectedDate)
-            {     
+            {          
                   daysDifference = selectedDate - extractedDate;
                   actualStartDate = moment(startDate).add(daysDifference, 'days');
-                  invoiceDates = getInvoiceMonthDates(actualStartDate, endDate);
+                  invoiceDates = getInvoiceDates(actualStartDate, endDate, 1, 'month');
                   result['invoiceDates']= invoiceDates;
 
             } else {
                   daysDifference = extractedDate - selectedDate;
                   actualStartDate = moment(startDate).add(1, 'month').subtract(daysDifference, "days");
-                  invoiceDates = getInvoiceMonthDates(actualStartDate, endDate);
+                  invoiceDates = getInvoiceDates(actualStartDate, endDate, 1, 'month');
                   result['invoiceDates']= invoiceDates;
-                  console.log("actual start date",invoiceDates);
             }
       }
       
+      console.log(result);
       res.send(result);
 });
 

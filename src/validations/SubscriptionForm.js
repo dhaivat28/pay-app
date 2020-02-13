@@ -1,4 +1,5 @@
 import * as Yup from 'yup';
+import moment from 'moment';
 
 export const SubscriptionForm = Yup.object({
 
@@ -16,9 +17,21 @@ export const SubscriptionForm = Yup.object({
           then: Yup.number().typeError('must be a number').positive('Please enter positive date').min(1).max(28).required(' Required'),
         }),
 
-        startDate: Yup.string().required(' Required'),
-
-        endDate: Yup.string().required(' Required'),
+      startDate: Yup.date().required(' Required'),
       
-    });
+      endDate:Yup.date().test('check Date difference', 'The Subscription cant be more than 3 months', function () { 
+     
+        let startDate = moment(this.parent['startDate']);
+        let endDate = moment(this.parent['endDate']);
+        let asDays = moment.duration(endDate.diff(startDate)).asDays();
+    
+          if(asDays > 90)
+          {
+            return false;
+          } else {
+            return true;
+          }
+    }),
+ 
+});
     

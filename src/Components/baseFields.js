@@ -1,6 +1,12 @@
 import {TextField, Radio, FormControlLabel} from "@material-ui/core";
 import {Field, ErrorMessage,useField} from 'formik';
 import React from 'react';
+import styled from 'styled-components';
+
+
+export const CustomError = styled.div`
+ color:red;
+`;
 
 export const MaterialInput = ({ label, ...props }) => {
       const [field] = useField(props);
@@ -8,7 +14,7 @@ export const MaterialInput = ({ label, ...props }) => {
       <div className="form-group mb-4">
         <label htmlFor={props.name}>{label} &nbsp;&nbsp;</label>
         <Field {...field} {...props} as={TextField}/>
-        <ErrorMessage name={props.name}/>
+        <ErrorMessage component={CustomError} name={props.name}/>
       </div>
       );
     };

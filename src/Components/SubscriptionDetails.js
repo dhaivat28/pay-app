@@ -1,6 +1,7 @@
 import React from 'react'
 import {Field, ErrorMessage} from 'formik';
-import {MaterialInput} from '../Components/baseFields';
+import {MaterialInput, CustomError} from '../Components/baseFields';
+
 
 const SubscriptionDetails = (props) => {
       if (props.subscriptionType && props.subscriptionType === "weekly")
@@ -17,7 +18,7 @@ const SubscriptionDetails = (props) => {
             <option value="6">Saturday</option>
             <option value="7">Sunday</option>
           </Field>
-          <ErrorMessage name="day"/>
+          <ErrorMessage component={CustomError} name="day"/>
           </div>
           );
       } 

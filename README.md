@@ -10,4 +10,4 @@ Runs the app using <br />
 
 To start Express.js server. go to the src folder and run <br />
 
-### `node createSubscription.js`
+### `node Subscriptions`

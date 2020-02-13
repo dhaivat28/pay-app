@@ -2,7 +2,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const app = express();
-const port = 3067;
+const port = 3068;
 
 app.use(cors());
 app.use(bodyParser.urlencoded({extended:false}));
@@ -26,15 +26,15 @@ app.post('/sub',(req,res) => {
       
       const request = req.body;
       let { subscriptionType, day, date, startDate, endDate} = request;
-     
       let result = request, invoiceDates;
-      
-      let daysDifference =0;
+      let daysDifference = 0;
       let actualStartDate;
 
       if(subscriptionType === "daily")
-      {
-            console.log("daily");
+      {     
+            actualStartDate = moment(startDate).add(1, 'days');
+            invoiceDates = getInvoiceDates(actualStartDate, endDate, 1, 'days');
+            result['invoiceDates']= invoiceDates;
 
       } else if (subscriptionType === "weekly")
       {

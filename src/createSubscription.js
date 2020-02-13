@@ -59,7 +59,6 @@ app.post('/sub',(req,res) => {
       else {
             console.log("monthly");
             console.log("date",date);
-
             let x = moment(startDate).get('date');
             console.log("x is ",x);
 

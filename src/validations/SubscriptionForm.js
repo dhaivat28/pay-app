@@ -19,10 +19,10 @@ export const SubscriptionForm = Yup.object({
 
       startDate: Yup.date().required(' Required'),
       
-      endDate:Yup.date().test('check Date difference', 'The Subscription cant be more than 3 months', function () { 
-     
+      endDate:Yup.date().test('check Date difference', 'The Subscription cant be more than 3 months', function (value) { 
+
         let startDate = moment(this.parent['startDate']);
-        let endDate = moment(this.parent['endDate']);
+        let endDate = moment(value);
         let asDays = moment.duration(endDate.diff(startDate)).asDays();
     
           if(asDays > 90)

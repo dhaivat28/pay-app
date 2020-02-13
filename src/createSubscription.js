@@ -2,7 +2,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const app = express();
-const port = 3062;
+const port = 3066;
 
 app.use(cors());
 app.use(bodyParser.urlencoded({extended:false}));
@@ -70,18 +70,16 @@ app.post('/sub',(req,res) => {
             }
       }
       else {
-            console.log("monthly");
-            console.log("date",date);
-            let x = moment(startDate).get('date');
-            console.log("x is ",x);
+           
+            let extractedDate = moment(startDate).get('date');
             let selectedDate = parseInt(date);
-            daysDifference = selectedDate - x;
+            daysDifference = selectedDate - extractedDate;
 
-            if(x < selectedDate)
+            if(extractedDate < selectedDate)
             {     
                   actualStartDate = moment(startDate).add(daysDifference, 'days');
-                  let test = getInvoiceMonthDates(actualStartDate, endDate);
-                  console.log("test",test);
+                  let invoiceDates = getInvoiceMonthDates(actualStartDate, endDate);
+                  result['invoiceDates']= invoiceDates;
 
             } else {
                   console.log("nope");

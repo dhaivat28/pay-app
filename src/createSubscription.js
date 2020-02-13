@@ -69,26 +69,28 @@ app.post('/sub',(req,res) => {
                   result['invoiceDates']= invoiceDates;
             }
       }
-      else {
+      else {      
            
             let extractedDate = moment(startDate).get('date');
             let selectedDate = parseInt(date);
-            daysDifference = selectedDate - extractedDate;
 
             if(extractedDate < selectedDate)
             {     
+                  daysDifference = selectedDate - extractedDate;
                   actualStartDate = moment(startDate).add(daysDifference, 'days');
-                  let invoiceDates = getInvoiceMonthDates(actualStartDate, endDate);
+                  invoiceDates = getInvoiceMonthDates(actualStartDate, endDate);
                   result['invoiceDates']= invoiceDates;
 
             } else {
-                  console.log("nope");
+                  daysDifference = extractedDate - selectedDate;
+                  actualStartDate = moment(startDate).add(1, 'month').subtract(daysDifference, "days");
+                  invoiceDates = getInvoiceMonthDates(actualStartDate, endDate);
+                  result['invoiceDates']= invoiceDates;
+                  console.log("actual start date",invoiceDates);
             }
-
       }
       
       res.send(result);
 });
 
-
-app.listen(port, () => console.log(`Hello world app listening on port ${port}!`))
+app.listen(port, () => console.log(`Hello world! I am listening on port ${port}!`))

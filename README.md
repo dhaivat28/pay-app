@@ -8,6 +8,6 @@ Runs the app using <br />
 
 ### `npm start`
 
-To start Express.js server. go to the src folder <br />
+To start Express.js server. go to the src folder and run <br />
 
 ### `node createSubscription.js`

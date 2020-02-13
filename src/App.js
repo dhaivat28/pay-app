@@ -1,12 +1,11 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {Button} from "@material-ui/core";
 import { Formik,Form, ErrorMessage} from 'formik';
 import axios from 'axios';
 import SubscriptionDetails from './Components/SubscriptionDetails';
 import {MaterialInput, MaterialRadio, CustomError} from './Components/baseFields';
 import {SubscriptionForm} from './validations/SubscriptionForm';
-import styled from 'styled-components'
-import InputAdornment from '@material-ui/core/InputAdornment';
+import styled from 'styled-components';
 
 const FormBox = styled.div`
 padding:40px;
@@ -15,22 +14,41 @@ margin-top:75px;
 box-shadow: 0 2px 5px 0 rgba(0,0,0,0.16), 0 2px 10px 0 rgba(0,0,0,0.12);
 `;
 
+const ResultBox = styled.div`
+padding:40px;
+margin-top:75px;
+-webkit-box-shadow: 0 2px 5px 0 rgba(0,0,0,0.16), 0 2px 10px 0 rgba(0,0,0,0.12);
+box-shadow: 0 2px 5px 0 rgba(0,0,0,0.16), 0 2px 10px 0 rgba(0,0,0,0.12);
+`;
+
+
+
 const App = () => {
 
   const  handleSubmit = (data, {setSubmitting}) => {
     setSubmitting(true); 
-    console.log("data is",data); 
     axios.post(`http://localhost:3068/sub`,data)
     .then(res => {
-      console.log(res.data);
+      if(res.data)
+      {
+        setState({
+          ...state,
+          data: res.data
+        })
+      }
     })
     setSubmitting(false);
   }
 
+  const [state, setState] = useState({ data: '', });
+  const {data} = state;
+  let dateList;
+  console.log(data);
+  
   return (
     <div className="App container">
       <div className="row">
-      <FormBox className="col-lg-6">
+      <FormBox className="col-lg-6 col-md-6">
         <h2>Create Subscription</h2><br></br>
           <Formik 
             initialValues={{
@@ -70,6 +88,17 @@ const App = () => {
             )}
           </Formik>
       </FormBox>
+      {data ? <ResultBox className="col-lg-4 col-md-4 offset-md-2 offset-lg-2">
+       
+        <h2>Subscription Details</h2><br></br>       
+            <h5>Amount: AU ${data.amount}</h5>
+            <h5>Subscription Type: {data.subscriptionType}</h5>
+            {/* {console.log(Array.isArray(data.invoiceDates))} */}
+            {dateList = data.invoiceDates.map(item => <li>{item}</li>)}
+           
+      </ResultBox> : ""}
+
+
       </div>
     </div>
   );

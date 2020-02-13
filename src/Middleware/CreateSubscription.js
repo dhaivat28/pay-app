@@ -1,12 +1,3 @@
-const express = require('express');
-const bodyParser = require('body-parser');
-const cors = require('cors');
-const app = express();
-const port = 3068;
-
-app.use(cors());
-app.use(bodyParser.urlencoded({extended:false}));
-app.use(bodyParser.json());
 let moment = require('moment');
 
 const getInvoiceDates = (startDate, endDate, incrementDays, incrementTerm) => {
@@ -18,12 +9,8 @@ const getInvoiceDates = (startDate, endDate, incrementDays, incrementTerm) => {
       return dateArray;
 } 
 
-app.get('/', (req, res) => {
-      res.send('Hello World, from express');
-});
-
-app.post('/sub',(req,res) => {
-      
+const createSubscription = (req,res,next) => {
+     
       const request = req.body;
       let { subscriptionType, day, date, startDate, endDate} = request;
       let result = request, invoiceDates;
@@ -76,6 +63,8 @@ app.post('/sub',(req,res) => {
       
       console.log(result);
       res.send(result);
-});
 
-app.listen(port, () => console.log(`Hello world! I am listening on port ${port}!`))
+      next();
+}
+
+module.exports = createSubscription;

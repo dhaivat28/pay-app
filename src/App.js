@@ -14,14 +14,14 @@ const FormBox = styled.div`
   margin-top:75px;
   -webkit-box-shadow: 0 2px 5px 0 rgba(0,0,0,0.16), 0 2px 10px 0 rgba(0,0,0,0.12);
   box-shadow: 0 2px 5px 0 rgba(0,0,0,0.16), 0 2px 10px 0 rgba(0,0,0,0.12);
-  max-height:500px;
+  max-height:600px;
 `;
 
 const App = () => {
 
   const  handleSubmit = (data, {setSubmitting}) => {
     setSubmitting(true); 
-    axios.post(`http://localhost:3068/sub`,data)
+    axios.post(`http://localhost:3070/createSubscription`,data)
     .then(res => {
       if(res.data)
       {

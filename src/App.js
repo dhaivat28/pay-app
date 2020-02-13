@@ -40,7 +40,7 @@ const App = () => {
   return (
     <div className="App container">
       <div className="row">
-      <FormBox className="col-lg-6 col-md-6">
+      <FormBox className="col-lg-6 col-md-12 col-sm-6 col-sm-12">
         <h2>Create Subscription</h2><br></br>
           <Formik 
             initialValues={{

@@ -24,7 +24,7 @@ let dateList;
 
       return (
             <React.Fragment>
-                  <ResultBox className="col-lg-4 col-md-4 offset-md-2 offset-lg-2">                 
+                  <ResultBox className="col-lg-4 col-md-12 col-sm-12 offset-sm-0 offset-md-0 offset-lg-2 ">                 
                         <h2>Subscription Details</h2><br></br>       
                         <Title>Amount: AU $ <SPAN>{props.data.amount}</SPAN></Title>
                         <Title>Subscription Type: <SPAN>{props.data.subscriptionType}</SPAN></Title>

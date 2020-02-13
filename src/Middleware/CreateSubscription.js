@@ -61,9 +61,8 @@ const createSubscription = (req,res,next) => {
             }
       }
       
-      console.log(result);
-      res.send(result);
-
+      //console.log(result);
+      res.json(result);
       next();
 }
 

@@ -2,7 +2,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const app = express();
-const port = 3061;
+const port = 3062;
 
 app.use(cors());
 app.use(bodyParser.urlencoded({extended:false}));
@@ -20,6 +20,17 @@ const getInvoiceDates = (startDate, stopDate) => {
       return dateArray;
 } 
 
+const getInvoiceMonthDates = (startDate, stopDate) => {
+      var dateArray = [];
+      var currentDate = moment(startDate);
+      var stopDate = moment(stopDate);
+      while (currentDate <= stopDate) {
+          dateArray.push(moment(currentDate).format('DD/MM/YYYY'));
+          currentDate = moment(currentDate).add(1, 'month');
+      }
+      return dateArray;
+} 
+
 app.get('/', (req, res) => {
       res.send('Hello World, from express');
 });
@@ -32,7 +43,9 @@ app.post('/sub',(req,res) => {
       let result = {}, invoiceDates;
       result['amount'] = amount;
       result['subscriptionType'] = subscriptionType;
-      
+      let daysDifference =0;
+      let actualStartDate;
+
       if(subscriptionType === "daily")
       {
             console.log("daily");
@@ -41,11 +54,11 @@ app.post('/sub',(req,res) => {
       {
             let selectedDay = parseInt(day);
             const weekDay = moment(startDate).isoWeekday();
-            let actualStartDate;
+           
 
             if(weekDay < selectedDay)
             {
-                  let daysDifference = selectedDay - weekDay;
+                  daysDifference = selectedDay - weekDay;
                   actualStartDate = moment(startDate).add(daysDifference, 'days');
                   invoiceDates = getInvoiceDates(actualStartDate, endDate);
                   result['invoiceDates']= invoiceDates;
@@ -61,10 +74,15 @@ app.post('/sub',(req,res) => {
             console.log("date",date);
             let x = moment(startDate).get('date');
             console.log("x is ",x);
+            let selectedDate = parseInt(date);
+            daysDifference = selectedDate - x;
 
-            if(x < date)
-            {
-                  console.log("hurrah");
+            if(x < selectedDate)
+            {     
+                  actualStartDate = moment(startDate).add(daysDifference, 'days');
+                  let test = getInvoiceMonthDates(actualStartDate, endDate);
+                  console.log("test",test);
+
             } else {
                   console.log("nope");
             }

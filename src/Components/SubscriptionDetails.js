@@ -2,7 +2,6 @@ import React from 'react'
 import {Field, ErrorMessage} from 'formik';
 import {MaterialInput, CustomError} from '../Components/baseFields';
 
-
 const SubscriptionDetails = (props) => {
       if (props.subscriptionType && props.subscriptionType === "weekly")
       {   
